@@ -786,7 +786,7 @@ void G_BuildTiccmd(ticcmd_t* cmd)
     upmove += flyspeed[speed];
   if (gamekeydown[key_flydown])
     upmove -= flyspeed[speed];
-
+/*
   // RT: variable like upmove, which is also not recorded to cmd
   if (gamekeydown[key_rt_flashlight] && rt_flashlight_ready)
   {
@@ -798,7 +798,7 @@ void G_BuildTiccmd(ticcmd_t* cmd)
   {
     rt_flashlight_ready = true;
   }
-
+*/
   // CPhipps - special events (game new/load/save/pause)
   if (special_event & BT_SPECIAL) {
     cmd->buttons = special_event;
@@ -2811,7 +2811,8 @@ void G_DoNewGame (void)
   //jff 4/26/98 wake up the status bar in case were coming out of a DM demo
   ST_Start();
   walkcamera.type=0; //e6y
-
+  
+/*
 #if RT_CUSTOM_MENU
   if (V_GetMode() == VID_MODERT)
   {
@@ -2826,6 +2827,7 @@ void G_DoNewGame (void)
     }
   }
 #endif
+*/
 }
 
 // killough 4/10/98: New function to fix bug which caused Doom

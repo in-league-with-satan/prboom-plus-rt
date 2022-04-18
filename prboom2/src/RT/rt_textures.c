@@ -540,6 +540,7 @@ RgMaterial BuildMaterial(const rt_texture_t *td, const uint8_t *rgba_buffer)
     .textures = {.albedoAlpha = {.isSRGB = true, .pData = rgba_buffer } },
     .pRelativePath = td->name,
     .filter = RG_SAMPLER_FILTER_NEAREST,
+    // .filter = RG_SAMPLER_FILTER_LINEAR,
     .addressModeU = RG_SAMPLER_ADDRESS_MODE_REPEAT,
     .addressModeV = RG_SAMPLER_ADDRESS_MODE_REPEAT,
   };
