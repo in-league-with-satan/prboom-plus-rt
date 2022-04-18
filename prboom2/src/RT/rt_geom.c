@@ -62,10 +62,6 @@ static void AddFlat(const int sectornum, dboolean ceiling, const visplane_t *pla
     const rt_texture_t *td;
   } flat = { 0 };
 
-  sector_t tempsec; // needed for R_FakeFlat
-  int floorlightlevel;      // killough 3/16/98: set floor lightlevel
-  int ceilinglightlevel;    // killough 4/11/98
-
   if (sectornum < 0)
     return;
   sector_t *sector = &sectors[sectornum]; // get the sector
@@ -172,9 +168,10 @@ static void AddFlat(const int sectornum, dboolean ceiling, const visplane_t *pla
 
   if (ceiling && flat.light > 0.0f)
   {
-    float w = RT_GetSectorLightLevelWeight(sectornum);
+    float w;
+    RgFloat3D c;
 
-    if (w > 0.0f)
+    if (RT_GetSectorLightLevelWeight(sectornum, &w, &c))
     {
       RgFloat3D center = { 0 };
 
@@ -192,14 +189,14 @@ static void AddFlat(const int sectornum, dboolean ceiling, const visplane_t *pla
       float offset = 0.2f;
       if (floor_ceiling_zdiff > 0.0f)
       {
-        offset = min(offset, floor_ceiling_zdiff * 0.5f);
+        offset = i_min(offset, floor_ceiling_zdiff * 0.5f);
       }
       center.data[1] += flat.z - offset;
 
       RgSphericalLightUploadInfo light_info =
       {
         .uniqueID = RT_GetUniqueID_Flat(sectornum, ceiling),
-        .color = { 1,1,1 },
+        .color = c,
         .position = center,
         .sectorID = sectornum,
         .radius = 0.05f,
@@ -209,9 +206,9 @@ static void AddFlat(const int sectornum, dboolean ceiling, const visplane_t *pla
       RG_VEC3_SCALE(light_info.color.data, flat.light);
       RG_VEC3_SCALE(light_info.color.data, w);
 
-      light_info.color.data[0] = max(light_info.color.data[0], 0.0005f);
-      light_info.color.data[1] = max(light_info.color.data[1], 0.0005f);
-      light_info.color.data[2] = max(light_info.color.data[2], 0.0005f);
+      light_info.color.data[0] = i_max(light_info.color.data[0], 0.0005f);
+      light_info.color.data[1] = i_max(light_info.color.data[1], 0.0005f);
+      light_info.color.data[2] = i_max(light_info.color.data[2], 0.0005f);
 
       RgResult r = rgUploadSphericalLight(rtmain.instance, &light_info);
       RG_CHECK(r);

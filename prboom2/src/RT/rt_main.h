@@ -33,10 +33,13 @@
 #include "d_player.h"
 #include "r_defs.h"
 
+typedef struct SDL_Window SDL_Window;
+
 typedef struct
 {
   RgInstance instance;
-  HWND hwnd;
+
+  SDL_Window *window;
 
   float mat_view[4][4];
   float mat_projectionvk[4][4];
@@ -69,7 +72,7 @@ typedef struct
 extern rtmain_t rtmain;
 
 
-void RT_Init(HINSTANCE hinstance, HWND hwnd);
+void RT_Init(void);
 void RT_Destroy(void);
 
 void RT_StartFrame(void);
@@ -121,9 +124,9 @@ void RT_GetLineInfo(int lineid, float *out_x1, float *out_z1, float *out_x2, flo
 void RT_DestroySectorGeometryData(const rtsectordata_t *data);
 
 void RT_MapMetaInfo_Init(int mission);
-void RT_MapMetaInfo_AddDelta(float delta);
+void RT_MapMetaInfo_AddDelta(float deltaweight, int deltared, int deltagreen, int deltablue);
 void RT_MapMetaInfo_WriteToFile(void);
-float RT_GetSectorLightLevelWeight(int sectornum);
+dboolean RT_GetSectorLightLevelWeight(int sectornum, float *out_weight, RgFloat3D *out_color);
 
 
 uint64_t RT_GetUniqueID_FirstPersonWeapon(int weaponindex);
@@ -137,3 +140,6 @@ int RT_GetSectorNum_Real(float real_x, float real_y);
 
 
 uint32_t RT_PackColor(byte r, byte g, byte b, byte a);
+
+#define i_min(a,b) ((a) < (b) ? (a) : (b))
+#define i_max(a,b) ((a) < (b) ? (b) : (a))
