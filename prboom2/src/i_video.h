@@ -62,6 +62,7 @@ typedef struct
   int dlss, fsr;              // 0 - off, [1,4] - quality from highest to lowest
   int renderscale;            // index in rt_settings_renderscale_e
   int bloom_intensity;        // index in [0,Reduced,Default,Exaggerated]
+  int crt_interlacing;        // bool
   int muzzleflash_intensity;  // index in [0,Reduced,Default]
   int statusbar_scale;        // to calculate procents: 10*(statusbar_scale+1)
 #if RT_SEPARATE_HUD_SCALE
@@ -75,6 +76,7 @@ typedef struct
 typedef enum
 {
   RT_SETTINGS_RENDERSCALE_DEFAULT, // 100%
+  RT_SETTINGS_RENDERSCALE_320x200_CRT,
   RT_SETTINGS_RENDERSCALE_320x200,
   RT_SETTINGS_RENDERSCALE_480,
   RT_SETTINGS_RENDERSCALE_600,
