@@ -252,7 +252,7 @@ void RT_MapMetaInfo_Init(int mission)
 
   if (filepath == NULL)
   {
-    I_Warning("Maps won't have additional light sources: can't find a map meta info file. Specify \"-iwadrt <file>\".\n");
+    // I_Warning("Maps won't have additional light sources: can't find a map meta info file. Specify \"-iwadrt <file>\".\n");
     return;
   }
 
@@ -261,7 +261,7 @@ void RT_MapMetaInfo_Init(int mission)
 
   if (length < 0)
   {
-    I_Warning("Maps won't have additional light sources: can't find the file \"%s\".\n", filepath);
+    // I_Warning("Maps won't have additional light sources: can't find the file \"%s\".\n", filepath);
     return;
   }
 
@@ -271,11 +271,11 @@ void RT_MapMetaInfo_Init(int mission)
 
     if (length == 0)
     {
-      I_Warning("%s is empty. Maps won't have additional light sources.\n", filepath);
+      // I_Warning("%s is empty. Maps won't have additional light sources.\n", filepath);
     }
     else
     {
-      I_Warning("%s wasn't found. Maps won't have additional light sources.\n", filepath);
+      // I_Warning("%s wasn't found. Maps won't have additional light sources.\n", filepath);
     }
     return;
   }
