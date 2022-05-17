@@ -32,6 +32,9 @@
 #include "w_wad.h"
 
 
+extern int gl_patch_filter;
+
+
 static struct
 {
   rt_texture_t *all_TXTR;
@@ -531,18 +534,24 @@ static dboolean HasAlpha(const uint8_t *buffer, uint32_t w, uint32_t h)
   return false;
 }
 
+int isflat(const char *path)
+{
+    return strstr(path, "flat/")!=NULL;
+}
 
 RgMaterial BuildMaterial(const rt_texture_t *td, const uint8_t *rgba_buffer)
 {
+  const int sampler_address_mode=
+     gl_patch_filter && td->id_type>RT_TEXTURE_ID_TYPE_TEXTURES && !isflat(td->name) ? RG_SAMPLER_ADDRESS_MODE_MIRRORED_REPEAT : RG_SAMPLER_ADDRESS_MODE_REPEAT;
+
   RgStaticMaterialCreateInfo info =
   {
     .size = { td->width, td->height },
     .textures = {.albedoAlpha = {.isSRGB = true, .pData = rgba_buffer } },
     .pRelativePath = td->name,
-    .filter = RG_SAMPLER_FILTER_NEAREST,
-    // .filter = RG_SAMPLER_FILTER_LINEAR,
-    .addressModeU = RG_SAMPLER_ADDRESS_MODE_REPEAT,
-    .addressModeV = RG_SAMPLER_ADDRESS_MODE_REPEAT,
+    .filter = gl_patch_filter ? RG_SAMPLER_FILTER_LINEAR : RG_SAMPLER_FILTER_NEAREST,
+    .addressModeU = sampler_address_mode,
+    .addressModeV = sampler_address_mode
   };
 
   RgMaterial m = RG_NO_MATERIAL;
