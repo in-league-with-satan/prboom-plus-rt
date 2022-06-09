@@ -1604,6 +1604,8 @@ static void UpdateFocus(void)
     }
   }
 
+  window_focused = true;
+
   // e6y
   // Reuse of a current palette to avoid black screen at software fullscreen modes
   // after switching to OS and back
